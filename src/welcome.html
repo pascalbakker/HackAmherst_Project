@@ -1,10 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Club Share</title>
+    <meta name = "keywords" content="Club, University" />
+    <meta name="description" content="Find clubs at university."/>
+    <meta name="revised" content="3/3/2018"/>
 </head>
-<body>
+<body onload="universityInput()" bgcolor="#ff4d4d" align="center">
+    <h1>Welcome to Club Share</h1>
+    <p>Club Share is a platform for you to find clubs on your campus with ease. Start by entering the name of the university you attend in the box below.</p>
+    <h2>University:</h2>
+    <script type="text/javascript">
+        function universityInput() {
+            var universityName = document.createElement("input");
+            universityName.setAttribute("type", "text");
+            universityName.setAttribute("name", "uniName");
+            universityName.style['width'] = '300px';
+            universityName.style['height'] = '30px';
+            universityName.style.fontSize = "large";
+            document.body.appendChild(universityName);
+            button();
+        }
+    </script>
 
+    <script type="text/javascript">
+        function button(){
+
+            var submitBtn = document.createElement("button");
+            submitBtn.innerHTML = 'Submit';
+            submitBtn.style['width'] = '70px';
+            submitBtn.style['height'] = '30px';
+            submitBtn.style.textAlign = "center";
+            submitBtn.style.background = "none";
+            submitBtn.style.border = "none";
+            submitBtn.addEventListener("click", goToSurvey);
+            document.body.appendChild(submitBtn);
+        }
+    </script>
 </body>
 </html>
