@@ -24,6 +24,7 @@
                 storageBucket: "clubshare-884b4.appspot.com",
                 messagingSenderId: "399368346175"
             };
+            firebase.initialize(config);
             var ref = firebase.database().ref('/schools/');
 
             var list = [];
