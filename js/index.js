@@ -246,7 +246,7 @@ var tagconverter = {
     "Vocal Performnance": ["sing"],
     "Dance": ["dance","artsy","sport"],
     "Write": ["humanities"],
-    "Musical Instrument": ["performingArts","creative","humanities"],
+    "Musical Instrument": ["performingArts","creative","humanities","musical instrument"],
     "Photography": [""],
     "Religious Activites": ["religious","community"],
     "Solve Problems": ["academic"],
@@ -268,7 +268,6 @@ function setupSurvey() {
     results = [];
     //GET RESULTS
     var survey = new Survey.Model(json);
-
     survey
         .onComplete
         .add(function (result) {
@@ -278,62 +277,10 @@ function setupSurvey() {
             results = result.data;
             getResults();
         });
-
-
     $("#surveyElement").Survey({model: survey});
 }
 
-
-
 //FUNCTIONS
-
-function getPersonality(resultsdata){
-    var returnString = "Traits ";
-    fixResults();
-    //Popular 1
-    tempresults = results;
-    var popular = getPopularElement(tempresults);
-    tempresults+= popular;
-    var index = tempresults.indexOf(popular);
-    if (index > -1) {
-        tempresults.splice(index, 1);
-    }
-    //Popular 2
-    popular = getPopularElement(tempresults);
-    tempresults+= popular;
-    index = array.indexOf(popular);
-    if (index > -1) {
-        tempresults.splice(index, 1);
-    }
-    //Popular 3
-    popular = getPopularElement(tempresults);
-    tempresults+= popular;
-
-    return returnString;
-}
-
-function getPopularElement(a)
-{
-    var count = 1, tempCount;
-    var popular = a[0];
-    var temp = 0;
-    for (var i = 0; i < (a.length - 1); i++)
-    {
-        temp = a[i];
-        tempCount = 0;
-        for (var j = 1; j < a.length; j++)
-        {
-            if (temp == a[j])
-                tempCount++;
-        }
-        if (tempCount > count)
-        {
-            popular = temp;
-            count = tempCount;
-        }
-    }
-    return popular;
-}
 
 // Function: Determine what clubs the user should join
 // Input
@@ -442,8 +389,7 @@ function setClubs(clubs,emails,phonenumber,bio){
     var htmlstring = "";
     for(var club in clubs) {
         htmlstring += clubs[club] + " | " + emails[club] + " | " +"<br />"+ bio[club] + "<br />"+"<br />";
-        if(club==14)
-            break;
+
     }
     console.log(clubs);
     document.getElementById("realResults").innerHTML = htmlstring;
@@ -459,22 +405,6 @@ function makeUnique(repeatArray){
         }
     }
     return unique_array;
-}
-
-function frequencyArrays(temparr) {
-    var mostpop = []
-    arr = temparr;
-    for(var i=0;i<arr.length;i++) {
-        var popular = getPopularElement(arr);
-        var index = arr.indexOf(popular);
-        if (index > -1) {
-            arr.splice(index, 1);
-        }
-        mostpop.push(popular);
-        if(i==19||i==arr.length-1)
-            break;
-    }
-    return mostpop;
 }
 
 //test
