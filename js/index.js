@@ -301,8 +301,8 @@ function fixResults(){
         }
     }
     delete results[key]
-    if(extrovertValue<=15) resultsModified.push("extrovert");
-    if(extrovertValue>=15) resultsModified.push("introvert");
+    if(extrovertValue<15) resultsModified.push("extrovert");
+    else if(extrovertValue>15) resultsModified.push("introvert");
 
     //CONVERT WORDS TO TAGS
     for(var key in results){
@@ -367,7 +367,7 @@ function getResults(){
             //See if it matches with any other keys
             //data1.val()
             //If a club tag and a user tag are the same and if that club is not the array, add the club
-            if(results.includes(data1.val())) {
+            if(results.includes(data1.val())&&!userClubs.includes(data.val().name)) {
                 //console.log(data.val().name);
                 userClubs.push(data.val().name);
                 userClubEmails.push(data.val().email);
@@ -399,7 +399,7 @@ function setClubs(clubs,emails,phonenumber,bio){
 
 function makeUnique(repeatArray){
     let unique_array = []
-    for(let i = 0;i < repeatArray.length; i++){
+    for(var i = 0;i < repeatArray.length; i++){
         if(unique_array.indexOf(repeatArray[i]) == -1){
             unique_array.push(repeatArray[i])
         }
