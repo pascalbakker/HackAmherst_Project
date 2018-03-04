@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search for Clubs</title>
+    <!--<script src="https://unpkg.com/jquery"></script>
+    <script src="https://surveyjs.azureedge.net/1.0.11/survey.jquery.js"></script>-->
+    <link href="https://surveyjs.azureedge.net/1.0.11/survey.css" type="text/css" rel="stylesheet"/>
+    <link rel="stylesheet" href="./index.css">
+
+    <!--FIREBASE SCRIPTS-->
+    <script src = "https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
+
+</head>
+<body>
+<div id="surveyElement"></div>
+<div id="surveyResult"></div>
+<div id="School"></div>
+
+<script type="text/javascript" src="../js/index.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
+<script>
+
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyB7bQIsKHAhf-ob8ZmC3suYOGhHYQuxUUg",
+        authDomain: "clubshare-884b4.firebaseapp.com",
+        databaseURL: "https://clubshare-884b4.firebaseio.com",
+        projectId: "clubshare-884b4",
+        storageBucket: "clubshare-884b4.appspot.com",
+        messagingSenderId: "399368346175"
+    };
+    firebase.initializeApp(config);
+    var ref = firebase.database().ref('/schools/AmherstCollege');
+
+    var list = [];
+    ref.on('child_added', function (snap) {
+        var schools = snap.val();
+        var para = document.createElement("p");
+        para.appendChild(document.createTextNode(schools.name));
+        document.body.appendChild(para);
+        list.push(schools.name);
+    });
+
+    var par = document.createElement("p");
+    par.appendChild(document.createTextNode(list.length.toString()));
+    document.body.appendChild(par);
+
+    for (var i=0; i<list.length; i++){
+        var para = document.createElement("p");
+        para.appendChild(document.createTextNode(list[i]));
+        document.body.appendChild(para);
+    }
+
+    /*for (var index = 0; index<arr.length; index++){
+        var para = document.createElement("p");
+        para.appendChild(document.createTextNode(arr[index]));
+        document.body.appendChild(para);
+    }*/
+</script>
+</body>
+</html>

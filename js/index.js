@@ -24,7 +24,7 @@ var json = {
                 "Humanities",
                 "Business",
                 "Heath and Medicine",
-                "Multi-/Interdiciplinary Studies",
+                "Multi-/Interdisciplinary Studies",
                 "Public and Social Services",
                 "Social Sciences",
                 "Trades and Personal Services"
@@ -112,7 +112,7 @@ var json = {
             //QUESTION 7: Activites
             type: "checkbox",
             name: "activities",
-            title: "What activities are you interrested in?",
+            title: "What activities are you interested in?",
             isRequired: true,
             colCount: 4,
             choices: [
@@ -129,7 +129,7 @@ var json = {
                 "Play Games",
                 "Read",
                 "Photography",
-                "Religious Actvities",
+                "Religious Activities",
                 "Solve Problems",
                 "Draw",
                 "Sports",
@@ -207,7 +207,7 @@ var tagconverter = {
     "Humanities": ["creative","artsy","education","academic"],
     "Business": ["business","leader","academic"],
     "Heath and Medicine": ["health","academic","nurturer"],
-    "Multi-/Interdiciplinary Studies":["extrovert"] ,
+    "Multi-/Interdisciplinary Studies":["extrovert"] ,
     "Public and Social Services": ["community"],
     "Social Sciences": ["academic","education"],
     "Trades and Personal Services": [],
@@ -229,10 +229,10 @@ var tagconverter = {
     "Affinity": ["religious","affinity"],
     "Arts and Performance": ["artsy","dance"],
     "Club Sports": ["sport","outdoor"],
-    "Common Interest": [],
-    "Media and Communications": ["educcation"],
+    "Common Interest": ["commonInterest"],
+    "Media and Communications": ["education"],
     "Pre-Professional": ["academic","business"],
-    "Religious": ["relgious","affinity"],
+    "Religious": ["religious","affinity"],
     "Social and Political Action": ["activism","community"],
     "Democratic Party": ["democrat","leader","activism","discussion"],
     "Republican Party": ["leader","activism","discussion"],
@@ -243,12 +243,12 @@ var tagconverter = {
     "Service": ["leader"],
     "Education": ["education","academic"],
     "Discussion": ["discussion"],
-    "Vocal Performnance": ["sing"],
+    "Vocal Performance": ["sing"],
     "Dance": ["dance","artsy","sport"],
     "Write": ["humanities"],
     "Musical Instrument": ["performingArts","creative","humanities","musical instrument"],
     "Photography": [""],
-    "Religious Activites": ["religious","community"],
+    "Religious Activities": ["religious","community"],
     "Solve Problems": ["academic"],
     "Draw": ["creative"],
     "Sports": ["sport","outdoors","clubSports","extrovert"],
@@ -258,7 +258,7 @@ var tagconverter = {
     "Meditation": ["sport"],
     "Group Fitness": ["dance","sport"],
     "Organized": ["academic","debate","education"],
-    "Nuturing": ["nurturing"],
+    "Nurturing": ["nurturing"],
     "Flexible": ["unusual","freeSpirit","games"],
     "Creative": ["artsy","creative"],
     "Resourceful": ["organized","leader","academic"]
@@ -371,7 +371,7 @@ function getResults(){
                 //console.log(data.val().name);
                 userClubs.push(data.val().name);
                 userClubEmails.push(data.val().email);
-                userClubPhoneNumbers.push(data.val().phoneNumb);
+                userClubPhoneNumbers.push(data.val().phoneNum);
                 userClubBio.push(data.val().bio);
             }
         });
@@ -398,6 +398,7 @@ function setClubs(clubs,emails,phonenumber,bio){
 }
 
 function makeUnique(repeatArray){
+    // noinspection JSAnnotator
     let unique_array = []
     for(var i = 0;i < repeatArray.length; i++){
         if(unique_array.indexOf(repeatArray[i]) == -1){
