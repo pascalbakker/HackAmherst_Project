@@ -1,6 +1,12 @@
-//VARIABLES
+// VARIABLES
 var columnCount = 4;
 var results;
+var resultsDictionary = [];
+var college = "AmherstCollege";
+var userClubs = [];
+var userClubEmails = [];
+var userClubPhoneNumbers = [];
+var userClubBio = [];
 
 //QUESTIONS
 var json = {
@@ -21,7 +27,7 @@ var json = {
                 "Multi-/Interdiciplinary Studies",
                 "Public and Social Services",
                 "Social Sciences",
-                "Trades anda Personal Services"
+                "Trades and Personal Services"
             ]
         }, {
             //QUESTION 2: ETHNICITY
@@ -36,7 +42,7 @@ var json = {
                 "Hispanic or Latino",
                 "Black or African American",
                 "Native American",
-                "Asian/ Pacific Islander"
+                "Asian/Pacific Islander"
             ]
         }, {
             //QUESTION 3: RELIGIOUS AFFLIATION
@@ -196,21 +202,89 @@ var json = {
     ]
 };
 
+var tagconverter = {
+    "Art":["artsy","creative","performingArts","humanities"],
+    "Humanities": ["creative","artsy","education","academic"],
+    "Business": ["business","leader","academic"],
+    "Heath and Medicine": ["health","academic","nurturer"],
+    "Multi-/Interdiciplinary Studies":["extrovert"] ,
+    "Public and Social Services": ["community"],
+    "Social Sciences": ["academic","education"],
+    "Trades and Personal Services": [],
+    "White": [],
+    "Hispanic or Latino": ["latino"],
+    "Black or African American": ["community","publicSocial","black","discussion"],
+    "Native American": [],
+    "Asian/Pacific Islander": [],
+    "Christian": ["christian","religion","community"],
+    "Mormon": [],
+    "Jehovah's Witness": [],
+    "Jewish": ["jewish","education","religion","community"],
+    "Muslim": [],
+    "Buddhist": [],
+    "Male": ["sport","outdoors","videoGames"],
+    "Female": ["artsy","creative"],
+    "Other": [],
+    "Academic": ["Academic"],
+    "Affinity": ["religious","affinity"],
+    "Arts and Performance": ["artsy","dance"],
+    "Club Sports": ["sport","outdoor"],
+    "Common Interest": [],
+    "Media and Communications": ["educcation"],
+    "Pre-Professional": ["academic","business"],
+    "Religious": ["relgious","affinity"],
+    "Social and Political Action": ["activism","community"],
+    "Democratic Party": ["democrat","leader","activism","discussion"],
+    "Republican Party": ["leader","activism","discussion"],
+    "Libertarian Party": ["leader","activism","discussion"],
+    "Green Party": ["activism"],
+    "Constitutional Party": ["activism"],
+    "Debate": ["discussion","activism","education","leader"],
+    "Service": ["leader"],
+    "Education": ["education","academic"],
+    "Discussion": ["discussion"],
+    "Vocal Performnance": ["sing"],
+    "Dance": ["dance","artsy","sport"],
+    "Write": ["humanities"],
+    "Musical Instrument": ["performingArts","creative","humanities"],
+    "Photography": [""],
+    "Religious Activites": ["religious","community"],
+    "Solve Problems": ["academic"],
+    "Draw": ["creative"],
+    "Sports": ["sport","outdoors","clubSports","extrovert"],
+    "Activism": ["leader","activism","nurturer"],
+    "Hiking": ["outdoors","sport","extrovert"],
+    "Unusual": ["unusual"],
+    "Meditation": ["sport"],
+    "Group Fitness": ["dance","sport"],
+    "Organized": ["academic","debate","education"],
+    "Nuturing": ["nurturing"],
+    "Flexible": ["unusual","freeSpirit","games"],
+    "Creative": ["artsy","creative"],
+    "Resourceful": ["organized","leader","academic"]
+}
 
-//GET RESULTS
-window.survey = new Survey.Model(json);
 
-survey
-    .onComplete
-    .add(function (result) {
-        document
-            .querySelector('#surveyResult')
-            .innerHTML = "result: " + JSON.stringify(result.data);
-        results = results.data;
-    });
+function setupSurvey() {
+    results = [];
+    //GET RESULTS
+    var survey = new Survey.Model(json);
 
-$("#surveyElement").Survey({model: survey});
+    survey
+        .onComplete
+        .add(function (result) {
+            getResults(result.data)
 
+            document
+                .querySelector('#surveyResult')
+            results = result.data;
+            getResults();
+        });
+
+
+    $("#surveyElement").Survey({model: survey});
+    console.log(results);
+}
 
 //FUNCTIONS
 
@@ -219,9 +293,44 @@ $("#surveyElement").Survey({model: survey});
 // userresults: dictionary type
 // Output
 // Array of Clubs
-function calculateClubs(userResults){
 
 
+function fixResults(){
+    var resultsModified = [];
+    //Get Extrovert Level
+    for(var key in results){
+        if(key=="IvsE"){
+            var ivseArray = results[key];
+            var extrovertValue = 0;
+            for(var ivseKey in ivseArray){
+                extrovertValue+=parseInt(ivseArray[ivseKey]);
+            }
+            break;
+        }
+    }
+    delete results[key]
+    if(extrovertValue<=15) resultsModified.push("extrovert");
+    if(extrovertValue>=15) resultsModified.push("introvert");
+
+    //CONVERT WORDS TO TAGS
+    for(var key in results){
+        //If a string
+        if(typeof results[key]=="string") {
+            var category = results[key];
+
+            resultsModified=resultsModified.concat(tagconverter[category]);
+
+        }
+        //If an array
+        else if(typeof results[key]=="object"){
+            for(var category in results[key]){
+                resultsModified=resultsModified.concat(tagconverter[category]);
+            }
+        }
+    }
+
+    //Set results
+    results = resultsModified;
 }
 
 function connectToData(){
@@ -237,13 +346,80 @@ function connectToData(){
     firebase.initializeApp(config);
 }
 
+function snapshotToArray(snapshot) {
+    var returnArr = [];
+
+    snapshot.forEach(function(childSnapshot) {
+        var item = childSnapshot.val();
+        item.key = childSnapshot.key;
+
+        returnArr.push(item);
+    });
+
+    return returnArr;
+}
+
 // Function: Get the table of clubs avaliable
 //Input
 // schoolname: String
 // Output
 // Table of clubs
-function getDatabaseTables(){
-    var ref = firebase.database().ref();
-    ref.on
+function getResults(){
+    var finalClubs;
+    fixResults();
+    var database = firebase.database();
+    var ref = firebase.database().ref("schools/"+college+"/");
+    ref.on("child_added", function(data) {
+        attref = firebase.database().ref("schools/"+college+"/"+data.key+"/tags/");
+        attref.on("child_added",function(data1){
+            //See if it matches with any other keys
+            //data1.val()
+            //If a club tag and a user tag are the same and if that club is not the array, add the club
+            if(results.includes(data1.val())) {
+                //console.log(data.val().name);
+                userClubs.push(data.val().name);
+                userClubEmails.push(data.val().email);
+                userClubPhoneNumbers.push(data.val().phoneNumb);
+                userClubBio.push(data.val().bio);
+            }
+        });
+        finalClubs = setClubs(userClubs,userClubEmails,userClubPhoneNumbers,userClubBio);
+        console.log(finalClubs);
+    });
 }
+
+function makeUnique(repeatArray){
+    let unique_array = []
+    for(let i = 0;i < repeatArray.length; i++){
+        if(unique_array.indexOf(repeatArray[i]) == -1){
+            unique_array.push(repeatArray[i])
+        }
+    }
+    return unique_array;
+}
+
+function setClubs(clubs,emails,phonenumber,bio){
+    clubs = makeUnique(clubs);
+    emails = makeUnique(emails);
+    phonenumber = makeUnique(phonenumber);
+    bio = makeUnique(bio);
+
+    var htmlstring = "";
+    for(var club in clubs) {
+        htmlstring += clubs[club] + " | " + emails[club] + " | " + phonenumber[club] + " | " + bio[club] + "<br />";
+        if(club==9)
+            break;
+    }
+    document.getElementById("realResults").innerHTML = htmlstring;
+
+    return unique_array;
+}
+
+setupSurvey();
+
+
+
+//connectToData();
+
+
 

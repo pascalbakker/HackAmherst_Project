@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>ClubShare - College Club Survey</title>
     <!--FIREBASE SCRIPTS-->
     <script src = "https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
@@ -11,14 +12,27 @@
     <link href="https://surveyjs.azureedge.net/1.0.11/survey.css" type="text/css" rel="stylesheet"/>
     <link rel="stylesheet" href="./index.css">
 
-
-
 </head>
 <body>
+<script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
+<script>
+    var config = {
+        apiKey: "AIzaSyB7bQIsKHAhf-ob8ZmC3suYOGhHYQuxUUg ",
+        authDomain: "clubshare-884b4.firebaseapp.com",
+        databaseURL: "https://clubshare-884b4.firebaseio.com/"
+    };
+    firebase.initializeApp(config);
+</script>
+
+
+
+
 <div id="surveyElement"></div>
 <div id="surveyResult"></div>
+<strong>
+<div id="realResults" class="adiv"></div>
 
+</strong size="+20">
 <script type="text/javascript" src="../js/index.js"></script>
-
 </body>
 </html>
