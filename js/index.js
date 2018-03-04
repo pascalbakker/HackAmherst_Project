@@ -414,7 +414,7 @@ function setClubs(clubs,emails,phonenumber,bio){
 
     return unique_array;
 }
-//
+//test
 setupSurvey();
 
 
