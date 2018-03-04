@@ -5,10 +5,160 @@
     <meta name = "keywords" content="Club, University" />
     <meta name="description" content="Find clubs at university."/>
     <meta name="revised" content="3/3/2018"/>
+
+
+    <style>input[type=text] {
+        width: 130px;
+        box-sizing: border-box;
+        border: 2px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+        background-color: white;
+        background-image: url('searchicon.png');
+        background-position: 10px 10px;
+        background-repeat: no-repeat;
+        padding: 12px 20px 12px 40px;
+        -webkit-transition: width 0.4s ease-in-out;
+        transition: width 0.4s ease-in-out;
+    }
+
+    input[type=text]:focus {
+        width: 25%;
+    }</style>
+
+
+
+
 </head>
 <body onload="universityInput()" bgcolor="#ff4d4d" align="center">
+
+
+
+
+
+
     <h1>Welcome to Club Share</h1>
-    <p>Club Share is a platform for you to find clubs on your campus with ease. Start by entering the name of the university you attend in the box below.</p>
+    <p>Club Share is a platform for you to find clubs on your campus with ease.</p>
+    <p>Start by searching club names or tags:</p>
+
+    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search..." title="Type in a name">
+
+    <!--<ul id="myUL">
+        <li><a href="#">Adele</a></li>
+        <li><a href="#">Agnes</a></li>
+
+        <li><a href="#">Billy</a></li>
+        <li><a href="#">Bob</a></li>
+
+        <li><a href="#">Calvin</a></li>
+        <li><a href="#">Christina</a></li>
+        <li><a href="#">Cindy</a></li>
+    </ul>-->
+
+    <ul id="list">
+        <li><a href="#">Blech</a></li>
+    </ul>
+
+
+    <script>
+
+        function myFunction() {
+            var input, filter, ul, li, a, i;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            ul = document.getElementById("myUL");
+            li = ul.getElementsByTagName("li");
+            for (i = 0; i < li.length; i++) {
+                a = li[i].getElementsByTagName("a")[0];
+                if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+
+                }
+            }
+        }
+        function connectToData(){
+            // Initialize Firebase
+            // TODO: Replace with your project's customized code snippet
+            var config = {
+                apiKey: "AIzaSyB7bQIsKHAhf-ob8ZmC3suYOGhHYQuxUUg ",
+                authDomain: "clubshare-884b4.firebaseapp.com",
+                databaseURL: "https://clubshare-884b4.firebaseio.com/",
+                //storageBucket: "<BUCKET>.appspot.com",
+                //messagingSenderId: "<SENDER_ID>",
+            };
+            firebase.initializeApp(config);
+        }
+
+        function fillDrop(){
+            input = document.getElementById("list");
+            var ref = firebase.database().ref("schools/"+college+"/");
+
+            ref.on("child_added", function (snap) {
+                var li = document.createElement('li');
+                var a = document.createElement('a');
+                var linkText = document.createTextNode(snap.val().url);
+                a.appendChild(linkText);
+                a.title = snap.val();
+                a.href = snap.val().url;
+                li.appendChild(a);
+                input.appendChild(li);
+            })
+
+
+        }
+
+        function searchClubs(){
+            var input, filter, i, a, ul,li;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            ul = document.getElementById("list");
+            li = ul.getElementsByTagName("li");
+            var database = firebase.database();
+            var ref = firebase.database().ref("schools/"+college+"/");
+            for (i = 0; i < data.length; i++) {
+                a = li[i].getElementsByTagName("a")[0];
+                a = data.val()[i];
+                if (a.toUpperCase().indexOf(filter) > -1) {
+                    a.style.display = "";
+                }
+                else {
+                    a.style.display = "none";
+                }
+            }
+
+
+
+
+
+                /*attref.on("child_added",function(data1){
+                    //See if it matches with any other keys
+                    //data1.val()
+                    //If a club tag and a user tag are the same and if that club is not the array, add the club
+                    if(results.includes(data1.val())&&!userClubs.includes(data.val().name)) {
+                        //console.log(data.val().name);
+                        userClubs.push(data.val().name);
+                        userClubEmails.push(data.val().email);
+                        userClubPhoneNumbers.push(data.val().phoneNumb);
+                        userClubBio.push(data.val().bio);
+                    }
+                });*/
+                //finalClubs = setClubs(userClubs,userClubEmails,userClubPhoneNumbers,userClubBio);
+            });
+        }
+
+
+
+
+
+    </script>
+
+
+
+
+
+    <!--
     <h2>University:</h2>
     <div id="container">
         <button id="button1" style="height:30px;width:300px"></button>
@@ -69,7 +219,11 @@
             document.body.appendChild(submitBtn);
         }
 
-        // Initialize Firebase
+-->
+
+
+
+
 
     </script>
 </body>
