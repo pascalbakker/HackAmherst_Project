@@ -10,22 +10,54 @@
     <h1>Welcome to Club Share</h1>
     <p>Club Share is a platform for you to find clubs on your campus with ease. Start by entering the name of the university you attend in the box below.</p>
     <h2>University:</h2>
+    <div id="container">
+        <button id="button1" style="height:30px;width:300px"></button>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
     <script type="text/javascript">
         function universityInput() {
-            var universityName = document.createElement("input");
+            var config = {
+                apiKey: "AIzaSyB7bQIsKHAhf-ob8ZmC3suYOGhHYQuxUUg",
+                authDomain: "clubshare-884b4.firebaseapp.com",
+                databaseURL: "https://clubshare-884b4.firebaseio.com",
+                projectId: "clubshare-884b4",
+                storageBucket: "clubshare-884b4.appspot.com",
+                messagingSenderId: "399368346175"
+            };
+            var ref = firebase.database().ref('/schools/');
+
+            var drop=document.getElementById("drop");
+
+            ref.on('child_added', function (data) {
+                var opt = document.createElement("option");
+                opt.value = data.key;
+                opt.text = data.key;
+                drop.appendChild(opt);
+            })
+
+            /*var drop = document.getElementById("drop");
+            var dropDown = document.createElement("select");
+            dropDown.id="uniSelect";
+            drop.appendChild(dropDown);
+
+            ref.on('child_added', function (data) {
+                var op = document.createElement("option");
+                op.value=data.key;
+                op.text=data.key;
+                dropDown.appendChild(op);
+            })*/
+
+            /*var universityName = document.createElement("input");
             universityName.setAttribute("type", "text");
             universityName.setAttribute("name", "uniName");
             universityName.style['width'] = '300px';
             universityName.style['height'] = '30px';
             universityName.style.fontSize = "large";
-            document.body.appendChild(universityName);
+            document.body.appendChild(universityName);*/
             button();
         }
-    </script>
 
-    <script type="text/javascript">
         function button(){
-
             var submitBtn = document.createElement("button");
             submitBtn.innerHTML = 'Submit';
             submitBtn.style['width'] = '70px';
@@ -33,9 +65,12 @@
             submitBtn.style.textAlign = "center";
             submitBtn.style.background = "none";
             submitBtn.style.border = "none";
-            submitBtn.addEventListener("click", goToSurvey);
+            submitBtn.addEventListener("click", );//fix this
             document.body.appendChild(submitBtn);
         }
+
+        // Initialize Firebase
+
     </script>
 </body>
 </html>
