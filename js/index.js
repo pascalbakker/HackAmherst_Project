@@ -7,6 +7,7 @@ var userClubs = [];
 var userClubEmails = [];
 var userClubPhoneNumbers = [];
 var userClubBio = [];
+var userClubLink=[];
 
 //QUESTIONS
 var json = {
@@ -289,36 +290,36 @@ function setupSurvey() {
 // Array of Clubs
 function fixResults(){
     var resultsModified = [];
-    //Get Extrovert Level
-    for(var key in results){
-        if(key=="IvsE"){
-            var ivseArray = results[key];
-            var extrovertValue = 0;
-            for(var ivseKey in ivseArray){
-                extrovertValue+=parseInt(ivseArray[ivseKey]);
+        //Get Extrovert Level
+        for(var key in results){
+            if(key=="IvsE"){
+                var ivseArray = results[key];
+                var extrovertValue = 0;
+                for(var ivseKey in ivseArray){
+                    extrovertValue+=parseInt(ivseArray[ivseKey]);
+                }
+                break;
             }
-            break;
         }
-    }
-    delete results[key]
-    if(extrovertValue<15) resultsModified.push("extrovert");
-    else if(extrovertValue>15) resultsModified.push("introvert");
+        delete results[key]
+        if(extrovertValue<15) resultsModified.push("extrovert");
+        else if(extrovertValue>15) resultsModified.push("introvert");
 
-    //CONVERT WORDS TO TAGS
-    for(var key in results){
-        //If a string
-        if(typeof results[key]=="string") {
-            var category = results[key];
+        //CONVERT WORDS TO TAGS
+        for(var key in results){
+            //If a string
+            if(typeof results[key]==="string") {
+                var category = results[key];
 
-            resultsModified=resultsModified.concat(tagconverter[category]);
-
-        }
-        //If an array
-        else if(typeof results[key]=="object"){
-            for(var category in results[key]){
                 resultsModified=resultsModified.concat(tagconverter[category]);
+
             }
-        }
+            //If an array
+            else if(typeof results[key]==="object"){
+                for(var category in results[key]){
+                    resultsModified=resultsModified.concat(tagconverter[category]);
+                }
+            }
     }
 
     //Set results
@@ -370,25 +371,35 @@ function getResults(){
             if(results.includes(data1.val())&&!userClubs.includes(data.val().name)) {
                 //console.log(data.val().name);
                 userClubs.push(data.val().name);
-                userClubEmails.push(data.val().email);
-                userClubPhoneNumbers.push(data.val().phoneNum);
+
+
+                if (data.val().email.indexOf(".")==-1) userClubEmails.push("");
+                else userClubEmails.push(data.val().email);
+                if (data.val().phoneNum==="") userClubPhoneNumbers.push("");
+                else userClubPhoneNumbers.push(data.val().phoneNum);
+
                 userClubBio.push(data.val().bio);
+                userClubLink.push(data.val().url);
             }
         });
-        finalClubs = setClubs(userClubs,userClubEmails,userClubPhoneNumbers,userClubBio);
+        finalClubs = setClubs(userClubs,userClubEmails,userClubPhoneNumbers,userClubBio, userClubLink);
     });
 }
 
-function setClubs(clubs,emails,phonenumber,bio){
+function setClubs(clubs,emails,phonenumber,bio, url){
 
-    clubs = makeUnique(clubs);
-    emails = makeUnique(emails);
-    phonenumber = makeUnique(phonenumber);
-    bio = makeUnique(bio);
+    //clubs = makeUnique(clubs);
+    //emails = makeUnique(emails);
+    //phonenumber = makeUnique(phonenumber);
+    //bio = makeUnique(bio);
+//    url = makeUnique(url);
 
     var htmlstring = "";
+    //var str = "Free Web Building Tutorials!";
+    //var result = str.link("https://www.w3schools.com");
     for(var club in clubs) {
-        htmlstring += clubs[club] + " | " + emails[club] + " | " +"<br />"+ bio[club] + "<br />"+"<br />";
+        if (club>20) break;
+        htmlstring += (clubs[club]).toString().link((url[club]).toString()) + " | " + emails[club] + " | " + phonenumber[club] +"<br />"+ bio[club] +"</br><p></p>";
 
     }
     console.log(clubs);
@@ -405,8 +416,12 @@ function makeUnique(repeatArray){
             unique_array.push(repeatArray[i])
         }
     }
+   // if(unique_array.length == 0){
+    //    return[""];
+    //}
     return unique_array;
 }
+
 
 //test
 setupSurvey();
