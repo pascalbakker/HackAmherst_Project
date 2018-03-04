@@ -1,0 +1,11 @@
+{
+  "name": "HackAmherst",
+  "version": "0.0.1",
+  "dependencies": {
+    "firebase": "latest",
+    "jquery": "^3.3.1"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.24.1"
+  }
+}
