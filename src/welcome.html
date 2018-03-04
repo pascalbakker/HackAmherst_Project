@@ -26,14 +26,10 @@
             };
             var ref = firebase.database().ref('/schools/');
 
-            var drop=document.getElementById("drop");
-
+            var list = [];
             ref.on('child_added', function (data) {
-                var opt = document.createElement("option");
-                opt.value = data.key;
-                opt.text = data.key;
-                drop.appendChild(opt);
-            })
+
+            });
 
             /*var drop = document.getElementById("drop");
             var dropDown = document.createElement("select");
@@ -46,14 +42,6 @@
                 op.text=data.key;
                 dropDown.appendChild(op);
             })*/
-
-            /*var universityName = document.createElement("input");
-            universityName.setAttribute("type", "text");
-            universityName.setAttribute("name", "uniName");
-            universityName.style['width'] = '300px';
-            universityName.style['height'] = '30px';
-            universityName.style.fontSize = "large";
-            document.body.appendChild(universityName);*/
             button();
         }
 
